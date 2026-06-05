@@ -1,31 +1,26 @@
 # NeoLearn
 
-NeoLearn is a student learning dashboard built with Next.js, Supabase, Tailwind CSS, Framer Motion, and Lucide React. It shows active courses, course progress, learning activity, and a responsive dashboard layout in a dark futuristic UI.
+NeoLearn is a dark, responsive student dashboard built with Next.js App Router, Supabase, Tailwind CSS, Framer Motion, and Lucide React. It shows a student welcome card, active course cards, progress bars, and a learning activity section in a Bento-style layout.
 
-## Tech Stack
+## Setup
 
-- Next.js App Router
-- TypeScript
-- Supabase
-- Tailwind CSS
-- Framer Motion
-- Lucide React
+```bash
+npm install
+npm run dev
+```
 
-## Features
+Open `http://localhost:3000` in the browser.
 
-- Dark mode student dashboard
-- Responsive sidebar navigation
-- Bento-style dashboard grid
-- Course cards loaded from Supabase
-- Animated progress bars
-- Framer Motion page and card animations
-- Loading skeleton UI
-- Graceful fallback/error handling for course data
+Create a `.env.local` file with your Supabase keys:
 
-## Supabase Setup
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-The dashboard reads course data from a Supabase table named `courses`.
-The table contains the course title, progress percentage, icon name, and creation date. I used the `icon_name` value to decide which Lucide icon should appear on each course card.
+## Supabase
+
+The dashboard reads course data from a Supabase table named `courses`. Each course has a title, progress value, Lucide icon name, and creation date.
 
 ```sql
 create table courses (
@@ -35,10 +30,7 @@ create table courses (
   icon_name text not null,
   created_at timestamp with time zone default now()
 );
-```
 
-Example seed data:
-```sql
 insert into courses (title, progress, icon_name)
 values
   ('AI/ML Foundations', 72, 'BrainCircuit'),
@@ -47,44 +39,20 @@ values
   ('Database Management Systems', 58, 'Database');
 ```
 
-## Environment Variables
+## Architecture Choices
 
-Create a `.env.local` file in the project root and add:
+I kept the project component-based so each part of the dashboard has a clear responsibility. The main layout is split into reusable pieces like the sidebar, hero tile, course cards, activity tile, and loading skeleton. This made the dashboard easier to adjust for desktop, tablet, and mobile views.
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
+The UI uses a Bento grid because it works well for showing different types of learning information together without making the page feel like a plain list. I used Tailwind CSS for layout, spacing, colors, and responsive behavior.
 
-Do not commit `.env.local` to GitHub.
+## Server and Client Component Split
 
-## Running Locally
+Course data is fetched on the server through the Supabase helper before rendering the dashboard. This keeps the database request out of the browser and lets the page receive course data as props.
 
-Install dependencies:
+Framer Motion animations are handled in client components because hover effects, progress bar animations, and active navigation highlights need browser-side interaction. This keeps the server side focused on data and the client side focused on motion and interactivity.
 
-```bash
-npm install
-```
+## Challenges
 
-Start the development server:
+One challenge was keeping the animations smooth without causing layout shifts. I handled this by using transform and opacity-based animations instead of changing layout properties like width, margin, or position.
 
-```bash
-npm run dev
-```
-
-Open the app at:
-
-```text
-http://localhost:3000
-```
-
-## Architecture
-
-The app uses the Next.js App Router. Course data is fetched from Supabase on the server and then passed into the dashboard UI. This keeps database fetching separate from the interactive client-side components.
-
-The UI is split into reusable components such as the sidebar, hero tile, course cards, activity tile, loading skeleton, and dashboard layout. Framer Motion is used for the animated card entrance, hover states, progress bars, and active navigation highlight.
-
-Animations are kept to transform and opacity-based changes so that hover and entrance effects stay smooth and avoid layout shifts.
-
-## Notes
-The main focus of this project was to keep the dashboard visually polished while still following the assignment requirements like server-rendered course data, modular components, semantic layout, responsive behavior, and smooth animations.
+Another challenge was keeping the dashboard responsive while still preserving the Bento layout. The sidebar changes from a full sidebar on desktop to an icon-focused navigation on smaller screens, and the grid stacks cleanly on mobile.
