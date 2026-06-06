@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import * as LucideIcons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import BentoTile from "./BentoTile";
-import type { Course } from "../types/courses";
+import type { Course } from "@/lib/courses";
 
 function getIcon(name: string): LucideIcon {
   const map = LucideIcons as unknown as Record<string, LucideIcon>;

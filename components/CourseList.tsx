@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Course } from "@/types/courses";
+import type { Course } from "@/lib/courses";
 import CourseCard from "./CourseCard";
 import { MotionDiv, containerVariants } from "./motion/MotionPrimitives";
 
