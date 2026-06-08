@@ -41,18 +41,17 @@ values
 
 ## Architecture Choices
 
-I kept the project component-based so each part of the dashboard has a clear responsibility. The main layout is split into reusable pieces like the sidebar, hero tile, course cards, activity tile, and loading skeleton. This made the dashboard easier to adjust for desktop, tablet, and mobile views.
+NeoLearn is component-based so each part of the dashboard has a clear responsibility. The layout is split into reusable pieces like the sidebar, hero tile, course cards, activity tile, and loading skeleton.
 
-The UI uses a Bento grid because it works well for showing different types of learning information together without making the page feel like a plain list. I used Tailwind CSS for layout, spacing, colors, and responsive behavior.
+The UI uses a Bento grid to show different types of learning information together without turning the dashboard into a plain list. Tailwind CSS handles layout, spacing, colors, and responsive behavior.
 
 ## Server and Client Component Split
 
 Course data is fetched on the server through the Supabase helper before rendering the dashboard. This keeps the database request out of the browser and lets the page receive course data as props.
 
-Framer Motion animations are handled in client components because hover effects, progress bar animations, and active navigation highlights need browser-side interaction. This keeps the server side focused on data and the client side focused on motion and interactivity.
+Framer Motion animations are handled in client components because hover effects, progress bar animations, and active navigation highlights need browser-side interaction.
 
 ## Challenges
 
-One challenge was keeping the animations smooth without causing layout shifts. I handled this by using transform and opacity-based animations instead of changing layout properties like width, margin, or position.
-
-Another challenge was keeping the dashboard responsive while still preserving the Bento layout. The sidebar changes from a full sidebar on desktop to an icon-focused navigation on smaller screens, and the grid stacks cleanly on mobile.
+- Keeping animations smooth without layout shifts by using transform and opacity-based animations.
+- Preserving the Bento layout across desktop, tablet, and mobile breakpoints.
